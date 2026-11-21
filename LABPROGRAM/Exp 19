@@ -1,0 +1,36 @@
+import pandas as pd
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+data = {
+    'Income': [20, 30, 45, 60, 25, 70, 35, 55, 80, 40, 65, 28],
+    'CreditScore': [550, 600, 700, 750, 580, 780, 620, 720,
+                   800, 680, 760, 590],
+    'LoanAmount': [10, 15, 20, 25, 12, 30, 18, 22, 28, 19, 26, 14],
+    'Approved': [0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]
+}
+
+df = pd.DataFrame(data)
+
+X = df[['Income', 'CreditScore', 'LoanAmount']]
+y = df['Approved']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)
+
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, pred))
+print("Predictions:", pred)
+
+new_customer = [[50, 710, 20]]
+result = model.predict(new_customer)
+
+if result[0] == 1:
+    print("Loan Approved")
+else:
+    print("Loan Rejected")
