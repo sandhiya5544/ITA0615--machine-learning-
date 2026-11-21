@@ -1,0 +1,27 @@
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+
+data = {
+    'RAM': [2, 3, 4, 6, 8, 2, 4, 6, 8, 3, 5, 7],
+    'Storage': [32, 64, 64, 128, 256, 16, 128, 256, 512, 32, 128, 256],
+    'Battery': [2500, 3000, 3500, 4000, 4500, 2000,
+               3800, 4200, 5000, 2800, 4000, 4500],
+    'Camera': [8, 12, 16, 20, 24, 5, 16, 32, 48, 10, 20, 40],
+    'PriceRange': [0, 0, 1, 2, 3, 0, 1, 2, 3, 0, 2, 3]
+}
+
+df = pd.DataFrame(data)
+
+X = df.drop('PriceRange', axis=1)
+y = df['PriceRange']
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X, y)
+
+print("Training Accuracy:", model.score(X, y))
+
+new_mobile = [[6, 128, 4000, 20]]
+prediction = model.predict(new_mobile)
+
+print("Price Range:", prediction[0])
+print("0 = Low, 1 = Medium, 2 = High, 3 = Very High")
